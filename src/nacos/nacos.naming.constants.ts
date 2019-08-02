@@ -1,0 +1,1 @@
+export const NACOS_NAMING_OPTION = Symbol("NACOS_NAMING_OPTION");
