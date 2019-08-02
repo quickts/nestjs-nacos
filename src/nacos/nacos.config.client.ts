@@ -54,27 +54,27 @@ export class NacosConfigClient extends ConfigClient {
             const metadata = Reflect.getMetadata(NACOS_CONFIG_METADATA, instance, propertyKey) as {
                 configId: string;
                 group: string;
-                options?: any;
             };
             if (!metadata) {
                 continue;
             }
+            let config: any = null;
             Object.defineProperty(instance, propertyKey, {
                 configurable: true,
                 enumerable: true,
                 get: () => {
-                    // this.getConfig(metadata.configId, metadata.group, metadata.options);
+                    return config;
                 }
             });
-            // let setterArr = this.allConfigHandler.get(configName);
-            // if (!setterArr) {
-            //     setterArr = [];
-            //     this.allConfigHandler.set(configName, setterArr);
-            //     this.logger.log(`Watch config '${configName}'`);
-            // }
-            // setterArr.push((config: any) => {
-            //     Reflect.set(instance, propertyKey, config);
-            // });
+            this.subscribe(
+                {
+                    dataId: metadata.configId,
+                    group: metadata.group
+                },
+                (content: string) => {
+                    config = JSON.parse(content);
+                }
+            );
         }
     }
 }

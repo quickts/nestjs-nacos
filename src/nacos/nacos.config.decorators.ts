@@ -1,8 +1,8 @@
 import { NACOS_CONFIG_METADATA } from "./nacos.config.constants";
 
-export function Config(configId: string, group: string, options?: any) {
+export function Config(configId: string, group: string = "DEFAULT_GROUP") {
     return (target: any, propertyKey: string | symbol) => {
         Reflect.set(target, propertyKey, null);
-        Reflect.defineMetadata(NACOS_CONFIG_METADATA, { configId, group, options }, target, propertyKey);
+        Reflect.defineMetadata(NACOS_CONFIG_METADATA, { configId, group }, target, propertyKey);
     };
 }
