@@ -1,6 +1,7 @@
 import { Module, DynamicModule } from "@nestjs/common";
 import { NacosConfigOptions } from "./nacos.config.interface";
 import { createProvider } from "./nacos.config.provider";
+import { NacosConfigClient } from "./nacos.config.client";
 
 @Module({})
 export class NacosConfigModule {
@@ -8,8 +9,8 @@ export class NacosConfigModule {
         const provider = createProvider(options);
         return {
             module: NacosConfigModule,
-            providers: [provider],
-            exports: [provider]
+            providers: [provider, NacosConfigClient],
+            exports: [NacosConfigClient]
         };
     }
 }

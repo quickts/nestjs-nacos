@@ -56,12 +56,11 @@ export class NacosNamingClient extends NamingClient implements OnModuleInit, OnM
         }
         let pos = Math.random() * totalWeight;
         for (const instance of instances) {
-            if (pos <= 0) {
-                if (instance.weight) {
+            if (instance.weight) {
+                pos -= instance.weight;
+                if (pos <= 0) {
                     return instance;
                 }
-            } else {
-                pos -= instance.weight;
             }
         }
         throw new Error(`Not found service ${serviceName}!`);

@@ -54,6 +54,7 @@ export class NacosConfigClient extends ConfigClient {
             const metadata = Reflect.getMetadata(NACOS_CONFIG_METADATA, instance, propertyKey) as {
                 configId: string;
                 group: string;
+                parser: Function;
             };
             if (!metadata) {
                 continue;
@@ -72,7 +73,7 @@ export class NacosConfigClient extends ConfigClient {
                     group: metadata.group
                 },
                 (content: string) => {
-                    config = JSON.parse(content);
+                    config = metadata.parser(content);
                 }
             );
         }
