@@ -2,7 +2,7 @@ import { format } from "util";
 import { Logger } from "@nestjs/common";
 
 export class NacosLogger {
-    private readonly logger = new Logger("NACOS");
+    private readonly logger = new Logger("NacosNative");
     log(message?: any, ...optionalParams: any[]) {
         this.logger.log(format(message, ...optionalParams));
     }
