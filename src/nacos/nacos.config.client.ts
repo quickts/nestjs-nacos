@@ -26,7 +26,7 @@ export class NacosConfigClient extends ConfigClient implements OnModuleInit {
         });
     }
 
-    scanMetadates(metaKey: any, cb: (instance: any, propertyKey: string, metadata: any) => void) {
+    scanPropertyMetadates(metaKey: any, cb: (instance: any, propertyKey: string, metadata: any) => void) {
         this.scanInstances((instance: any) => {
             for (const propertyKey in instance) {
                 const metadata = Reflect.getMetadata(metaKey, instance, propertyKey);
@@ -39,15 +39,7 @@ export class NacosConfigClient extends ConfigClient implements OnModuleInit {
 
     onModuleInit() {
         this.logger.log("Initializing...");
-        this.scanMetadates(NACOS_CONFIG_METADATA, (instance, propertyKey, metadata) => {
-            let config: any = null;
-            Object.defineProperty(instance, propertyKey, {
-                configurable: true,
-                enumerable: true,
-                get: () => {
-                    return config;
-                }
-            });
+        this.scanPropertyMetadates(NACOS_CONFIG_METADATA, (instance, propertyKey, metadata) => {
             this.subscribe(
                 {
                     dataId: metadata.configId,
@@ -56,7 +48,8 @@ export class NacosConfigClient extends ConfigClient implements OnModuleInit {
                 (content: string) => {
                     this.logger.log(`Config Config! group: ${metadata.group} configId: ${metadata.configId}`);
                     this.logger.log(content);
-                    config = metadata.parser(content);
+                    const config = metadata.parser(content);
+                    instance[propertyKey] = config;
                 }
             );
 
