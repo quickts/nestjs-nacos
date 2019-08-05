@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Config, NacosNamingClient } from "./../src";
+import { Config, NacosNamingClient } from "../src";
 @Injectable()
 export class AppService {
     @Config("test")
@@ -12,7 +12,7 @@ export class AppService {
         const instance = await this.namingClient.selectOneHealthyInstance("nodejs.test.domain");
         return {
             hello: "Hello World!",
-            len: this.testConfig.len,
+            testConfig: this.testConfig,
             instance: instance
         };
     }

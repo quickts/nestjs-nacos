@@ -1,5 +1,5 @@
 {
-  "name": "@quickts/nestjs-cluster",
+  "name": "@quickts/nestjs-nacos",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

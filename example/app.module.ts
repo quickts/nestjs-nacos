@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { NacosNamingModule, NacosConfigModule } from "./../src";
+import { NacosNamingModule, NacosConfigModule } from "../src";
 
 @Module({
     imports: [
