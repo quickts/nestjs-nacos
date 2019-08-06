@@ -23,6 +23,7 @@ export interface NacosInstanceOptions {
 }
 
 export interface NacosNamingOptions {
+    loggerLevel?: "DEBUG" | "INFO" | "WARN" | "ERROR";
     clientOptions: NacosClientOptions;
     instanceOptions: NacosInstanceOptions;
 }

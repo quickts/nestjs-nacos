@@ -13,7 +13,7 @@ export class NacosNamingClient extends NamingClient implements OnModuleInit, OnM
         super({
             ...options.clientOptions,
             metadata: metadata,
-            logger: new NacosLogger()
+            logger: new NacosLogger(options.loggerLevel)
         });
         this.instanceOptions = options.instanceOptions;
         this.metadata = metadata;
