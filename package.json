@@ -38,6 +38,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
+    "@quickts/nestjs-scanner": "^1.0.3",
     "nacos": "^2.0.0"
   },
   "files": [

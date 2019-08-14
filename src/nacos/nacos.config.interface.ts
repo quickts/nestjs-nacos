@@ -1,3 +1,5 @@
-import { ClientOptions } from "nacos";
+import { NacosConfigClient } from "nacos";
 
-export type NacosConfigOptions = ClientOptions;
+export interface OnConfigClientInit {
+    onConfigClientInit(configClient: NacosConfigClient): any;
+}

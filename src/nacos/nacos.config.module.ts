@@ -1,16 +1,32 @@
-import { Module, DynamicModule } from "@nestjs/common";
-import { NacosConfigOptions } from "./nacos.config.interface";
+import { Module, DynamicModule, Global } from "@nestjs/common";
+import { ScannerModule } from "@quickts/nestjs-scanner";
+import { ClientOptions } from "nacos";
 import { createProvider } from "./nacos.config.provider";
-import { NacosConfigClient } from "./nacos.config.client";
+import { NacosConfigService } from "./nacos.config.service";
 
 @Module({})
 export class NacosConfigModule {
-    static forRoot(options: NacosConfigOptions): DynamicModule {
+    static forRoot(options: ClientOptions): DynamicModule {
         const provider = createProvider(options);
         return {
             module: NacosConfigModule,
-            providers: [provider, NacosConfigClient],
-            exports: [NacosConfigClient]
+            imports: [ScannerModule.forRoot(false)],
+            providers: [provider, NacosConfigService],
+            exports: [NacosConfigService]
+        };
+    }
+}
+
+@Global()
+@Module({})
+export class NacosConfigGlobalModule {
+    static forRoot(options: ClientOptions): DynamicModule {
+        const provider = createProvider(options);
+        return {
+            module: NacosConfigModule,
+            imports: [ScannerModule.forRoot(true)],
+            providers: [provider, NacosConfigService],
+            exports: [NacosConfigService]
         };
     }
 }
