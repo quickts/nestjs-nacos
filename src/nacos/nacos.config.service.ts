@@ -42,12 +42,6 @@ export class NacosConfigService implements OnModuleInit, OnModuleDestroy {
         await this.scannerService.scanProviderPropertyMetadates(NACOS_CONFIG_CLIENT_METADATA, async (instance, propertyKey) => {
             instance[propertyKey] = this.configClient;
         });
-
-        await this.scannerService.scanProvider(async instance => {
-            if (instance["onConfigClientInit"]) {
-                await instance["onConfigClientInit"](this.configClient);
-            }
-        });
     }
 
     async onModuleDestroy() {

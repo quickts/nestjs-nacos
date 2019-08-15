@@ -1,0 +1,1 @@
+export const NACOS_INSTANCE_OPTION = Symbol("NACOS_INSTANCE_OPTION");

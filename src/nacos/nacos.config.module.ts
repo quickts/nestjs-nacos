@@ -23,7 +23,7 @@ export class NacosConfigGlobalModule {
     static forRoot(options: ClientOptions): DynamicModule {
         const provider = createProvider(options);
         return {
-            module: NacosConfigModule,
+            module: NacosConfigGlobalModule,
             imports: [ScannerModule.forRoot(true)],
             providers: [provider, NacosConfigService],
             exports: [NacosConfigService]
