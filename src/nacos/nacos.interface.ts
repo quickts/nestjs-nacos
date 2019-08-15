@@ -9,23 +9,8 @@ export interface NacosClientOptions {
     vipSrvRefInterMillis?: number;
 }
 
-export interface NacosInstanceOptions {
-    serviceName: string;
-    clusterName?: string;
-    groupName?: string;
-    ip: string;
-    port: number;
-    weight?: number;
-    valid?: boolean;
-    healthy?: boolean;
-    enabled?: boolean;
-    ephemeral?: boolean;
-}
-
-export interface NacosNamingOptions {
+export interface NacosNamingOptions extends NacosClientOptions {
     loggerLevel?: "DEBUG" | "INFO" | "WARN" | "ERROR";
-    clientOptions: NacosClientOptions;
-    instanceOptions: NacosInstanceOptions;
 }
 
 export interface NacosInstance {
@@ -41,4 +26,18 @@ export interface NacosInstance {
     marked: boolean;
     healthy: boolean;
     metadata: any;
+}
+
+export interface NacosInstanceOptions {
+    serviceName: string;
+    clusterName?: string;
+    groupName?: string;
+    ip: string;
+    port: number;
+    weight?: number;
+    valid?: boolean;
+    healthy?: boolean;
+    enabled?: boolean;
+    ephemeral?: boolean;
+    metadata?: any;
 }
