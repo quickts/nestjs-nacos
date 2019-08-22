@@ -81,10 +81,10 @@ export class NacosNamingService implements OnModuleInit, OnModuleDestroy {
                 needReplace = protocol === reqProtocol;
             }
             if (needReplace) {
-                const results = /(?<=:\/\/)[a-zA-Z\.0-9]+(?=\/)/.exec(config.url);
+                const results = /(?<=:\/\/)[a-zA-Z\.0-9]+(?=\/|$)/.exec(config.url);
                 if (results && results.length) {
                     const service = await this.selectOneHealthyInstance(results[0]);
-                    config.url = config.url.replace(`${reqProtocol}://${results[0]}`, `${replace}://${service.ip}/${service.port}`);
+                    config.url = [replace, "://", service.ip, ":", service.port, config.url.substr(results.index + results[0].length)].join("");
                 }
             }
             return config;
