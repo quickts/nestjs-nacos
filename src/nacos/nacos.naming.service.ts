@@ -69,12 +69,24 @@ export class NacosNamingService implements OnModuleInit, OnModuleDestroy {
         throw new Error(`Not found healthy service ${serviceName}!`);
     }
 
-    axiosRequestInterceptor() {
+    axiosRequestInterceptor(protocol?: string) {
         return async (config: AxiosRequestConfig) => {
-            const results = /(?<=:\/\/)[a-zA-Z\.0-9]+(?=\/)/.exec(config.url);
-            if (results && results.length) {
-                const service = await this.selectOneHealthyInstance(results[0]);
-                config.url = config.url.replace(results[0], `${service.ip}/${service.port}`);
+            let needReplace = true;
+            if (protocol) {
+                const protocolResults = /[a-z]+(?=:\/\/)/.exec(config.url);
+                if (protocolResults && protocolResults.length) {
+                    const reqProtocol = protocolResults[0];
+                    needReplace = protocol === reqProtocol;
+                } else {
+                    needReplace = false;
+                }
+            }
+            if (needReplace) {
+                const results = /(?<=:\/\/)[a-zA-Z\.0-9]+(?=\/)/.exec(config.url);
+                if (results && results.length) {
+                    const service = await this.selectOneHealthyInstance(results[0]);
+                    config.url = config.url.replace(results[0], `${service.ip}/${service.port}`);
+                }
             }
             return config;
         };
