@@ -39,7 +39,8 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@quickts/nestjs-scanner": "^1.0.4"
+    "@quickts/nestjs-scanner": "^1.0.4",
+    "strip-json-comments": "^3.0.1"
   },
   "files": [
     "dist"
