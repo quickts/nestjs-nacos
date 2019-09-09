@@ -1,6 +1,11 @@
 import { NACOS_CONFIG_METADATA, NACOS_CONFIG_CLIENT_METADATA } from "./nacos.config.constants";
+import * as stripJsonComments from "strip-json-comments";
 
-export function Config(configId: string, group: string = "DEFAULT_GROUP", parser: Function = JSON.parse) {
+function defaultParser(data: string) {
+    return JSON.parse(stripJsonComments(data));
+}
+
+export function Config(configId: string, group: string = "DEFAULT_GROUP", parser: Function = defaultParser) {
     return (target: any, propertyKey: string | symbol) => {
         Reflect.set(target, propertyKey, null);
         Reflect.defineMetadata(NACOS_CONFIG_METADATA, { configId, group, parser }, target, propertyKey);
