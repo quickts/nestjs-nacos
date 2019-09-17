@@ -4,7 +4,7 @@ import * as stripJsonComments from "strip-json-comments";
 function defaultParser(data: string) {
     return JSON.parse(stripJsonComments(data), function(key, value) {
         if (typeof value === "string") {
-            if (/^\d\d\d\d-\d\d-\d\dT?\d\d:\d\d:\d\d(\.\d\d\d)?Z?$/.test(value)) {
+            if (/^\d\d\d\d-\d\d-\d\dT|\s\d\d:\d\d:\d\d(\.\d\d\d)?Z?$/.test(value)) {
                 return new Date(value);
             }
         }
