@@ -24,7 +24,7 @@ export class NacosConfigService implements OnModuleInit, OnModuleDestroy {
                     this.logger.log(`Config update! group: ${metadata.group} configId: ${metadata.configId}`);
                     this.logger.log(content);
                     try {
-                        const config = metadata.parser(content);
+                        const config = metadata.parser(content, instance);
                         instance[propertyKey] = config;
                     } catch (err) {
                         this.logger.error("Parser config error!");
