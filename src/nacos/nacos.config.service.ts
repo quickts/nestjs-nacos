@@ -20,12 +20,15 @@ export class NacosConfigService implements OnModuleInit, OnModuleDestroy {
             this.listeners.push({
                 dataId: metadata.configId,
                 group: metadata.group,
-                listener: (content: string) => {
+                listener: async (content: string) => {
                     this.logger.log(`Config update! group: ${metadata.group} configId: ${metadata.configId}`);
                     this.logger.log(content);
                     try {
                         const config = metadata.parser(content, instance);
                         instance[propertyKey] = config;
+                        if (instance["onConfigUpdate"]) {
+                            await instance["onConfigUpdate"](config, metadata.configId, metadata.group);
+                        }
                     } catch (err) {
                         this.logger.error("Parser config error!");
                         this.logger.error(err);
