@@ -71,7 +71,7 @@ export class NacosNamingService implements OnModuleInit, OnModuleDestroy {
 
     axiosRequestInterceptor(matchReg: RegExp) {
         return async (config: AxiosRequestConfig) => {
-            const results = /(?<=:\/\/)[a-zA-Z\.0-9]+(?=\/|$)/.exec(config.url);
+            const results = /(?<=:\/\/)[a-zA-Z\.\-_0-9]+(?=\/|$)/.exec(config.url);
             if (results && results.length) {
                 const serviceName = results[0];
                 if (matchReg.test(serviceName)) {
