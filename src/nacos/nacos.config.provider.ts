@@ -1,5 +1,5 @@
 import { Provider } from "@nestjs/common";
-import { ClientOptions } from "nacos";
+import { ClientOptions } from "./nacos.config.interface";
 import { NACOS_CONFIG_OPTION } from "./nacos.config.constants";
 
 export function createProvider(nacosConfigOptions: ClientOptions): Provider<ClientOptions> {

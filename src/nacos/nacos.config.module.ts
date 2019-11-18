@@ -1,6 +1,6 @@
 import { Module, DynamicModule, Global } from "@nestjs/common";
 import { ScannerModule } from "@quickts/nestjs-scanner";
-import { ClientOptions } from "nacos";
+import { ClientOptions } from "./nacos.config.interface";
 import { createProvider } from "./nacos.config.provider";
 import { NacosConfigService } from "./nacos.config.service";
 
