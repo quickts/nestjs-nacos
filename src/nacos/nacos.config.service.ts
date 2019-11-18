@@ -1,7 +1,9 @@
 import { Injectable, Inject, OnModuleInit, OnModuleDestroy, Logger } from "@nestjs/common";
 import { ScannerService } from "@quickts/nestjs-scanner";
 import { NACOS_CONFIG_OPTION, NACOS_CONFIG_METADATA, NACOS_CONFIG_CLIENT_METADATA } from "./nacos.config.constants";
-import { NacosConfigClient, ClientOptions } from "nacos";
+import { NacosConfigClient } from "./nacos.config.client";
+import { ClientOptions } from "./nacos.config.interface";
+// import { NacosConfigClient, ClientOptions } from "nacos";
 
 @Injectable()
 export class NacosConfigService implements OnModuleInit, OnModuleDestroy {
