@@ -54,5 +54,9 @@ export class NacosConfigService implements OnModuleInit, OnModuleDestroy {
             this.configClient.unSubscribe({ dataId, group }, listener);
         }
         this.listeners.length = 0;
+        if (this.configClient) {
+            this.configClient.close();
+            this.configClient = null;
+        }
     }
 }
