@@ -3,16 +3,37 @@ import { AxiosRequestConfig } from "axios";
 import { NacosLogger } from "./nacos.logger";
 import { NACOS_NAMING_OPTION } from "./nacos.naming.constants";
 import { NacosNamingOptions, NacosInstance, NacosInstanceOptions } from "./nacos.interface";
-const NacosNamingClient = require("nacos").NacosNamingClient;
+const { NacosNamingClient } = require("nacos");
 
 @Injectable()
 export class NacosNamingService implements OnModuleInit, OnModuleDestroy {
     private namingClient: any;
     constructor(@Inject(NACOS_NAMING_OPTION) options: NacosNamingOptions) {
+        const logger = new NacosLogger(options.loggerLevel);
         this.namingClient = new NacosNamingClient({
             ...options,
-            logger: new NacosLogger(options.loggerLevel)
+            logger: logger,
         });
+
+        const _serverProxy = this.namingClient._serverProxy;
+        const _beatReactor = this.namingClient._beatReactor;
+        const _beat = _beatReactor._beat;
+        _beatReactor._beat = async function (beatInfo) {
+            try {
+                const params = {
+                    namespaceId: _serverProxy.namespace,
+                    serviceName: beatInfo.serviceName,
+                    clusterName: beatInfo.cluster,
+                    ip: beatInfo.ip,
+                    port: beatInfo.port + "",
+                    metadata: JSON.stringify(beatInfo.metadata),
+                };
+                await _serverProxy._reqAPI("/nacos/v1/ns/instance", params, "PUT");
+            } catch (err) {
+                logger.error(err);
+            }
+            return await _beat.call(this, beatInfo);
+        };
     }
 
     async onModuleInit() {
