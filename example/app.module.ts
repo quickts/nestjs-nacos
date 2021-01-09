@@ -1,27 +1,29 @@
-import { Module } from "@nestjs/common";
+import { Module, HttpModule, HttpService } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { NacosNamingModule, NacosConfigModule } from "../src";
+import { NacosNamingGlobalModule, NacosConfigGlobalModule, NacosNamingService } from "../src";
 
 @Module({
     imports: [
-        NacosNamingModule.forRoot({
-            clientOptions: {
-                serverList: "127.0.0.1:8848", // replace to real nacos serverList
-                namespace: "public"
-            },
-            instanceOptions: {
-                serviceName: "nodejs.test.domain",
-                ip: "1.1.1.1",
-                port: 8080
-            }
+        // 此全局模块用来与nacos服务器通信 必须存在
+        NacosNamingGlobalModule.forRoot({
+            serverList: "127.0.0.1:8848", // nacos服务器的ip
+            namespace: "public" // 服务要注册到哪个命名空间, 自己创建的要填命名空间的uuid
         }),
-
-        NacosConfigModule.forRoot({
-            serverAddr: "127.0.0.1:8848"
-        })
+        // 此全局模块用来获取配置文件
+        NacosConfigGlobalModule.forRoot({
+            serverAddr: "127.0.0.1:8848",// nacos服务器的ip
+            namespace: "public" // 服务要注册到哪个命名空间, 自己创建的要填命名空间的uuid
+        }),
+        HttpModule
     ],
     controllers: [AppController],
     providers: [AppService]
 })
-export class AppModule {}
+export class AppModule {
+    constructor(httpService: HttpService, namingService: NacosNamingService) {
+        // 设置interceptor
+        // 如果访问的域名以.svc结尾 则去nacos根据权值随机选择一个实例进行连接
+        httpService.axiosRef.interceptors.request.use(namingService.axiosRequestInterceptor(/\.svc$/));
+    }
+}
