@@ -2,6 +2,7 @@ import { Module, HttpModule, HttpService } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { NacosNamingGlobalModule, NacosConfigGlobalModule, NacosNamingService } from "../src";
+import UserModule from "./user/user.module";
 
 @Module({
     imports: [
@@ -15,7 +16,8 @@ import { NacosNamingGlobalModule, NacosConfigGlobalModule, NacosNamingService } 
             serverAddr: "127.0.0.1:8848",// nacos服务器的ip
             namespace: "public" // 服务要注册到哪个命名空间, 自己创建的要填命名空间的uuid
         }),
-        HttpModule
+        HttpModule,
+        UserModule
     ],
     controllers: [AppController],
     providers: [AppService]

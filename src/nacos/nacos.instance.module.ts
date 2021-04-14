@@ -1,6 +1,6 @@
 import { Module, DynamicModule, Global } from "@nestjs/common";
-import { NacosInstanceOptions } from "./nacos.interface";
-import { createProvider } from "./nacos.instance.provider";
+import { NacosInstanceOptions, NacosInstanceAsyncOptions } from "./nacos.interface";
+import { createProvider, createAsyncProvider } from "./nacos.instance.provider";
 import { NacosInstanceService } from "./nacos.instance.service";
 
 @Module({})
@@ -9,6 +9,16 @@ export class NacosInstanceModule {
         return {
             module: NacosInstanceModule,
             providers: [createProvider(options), NacosInstanceService],
+            exports: [NacosInstanceService]
+        };
+    }
+
+    static forRootAsync(options: NacosInstanceAsyncOptions): DynamicModule {
+        const provider = createAsyncProvider(options);
+        return {
+            module: NacosInstanceModule,
+            imports: [],
+            providers: [provider, NacosInstanceService],
             exports: [NacosInstanceService]
         };
     }
@@ -21,6 +31,16 @@ export class NacosInstanceGlobalModule {
         return {
             module: NacosInstanceGlobalModule,
             providers: [createProvider(options), NacosInstanceService],
+            exports: [NacosInstanceService]
+        };
+    }
+
+    static forRootAsync(options: NacosInstanceAsyncOptions): DynamicModule {
+        const provider = createAsyncProvider(options);
+        return {
+            module: NacosInstanceGlobalModule,
+            imports: [],
+            providers: [provider, NacosInstanceService],
             exports: [NacosInstanceService]
         };
     }

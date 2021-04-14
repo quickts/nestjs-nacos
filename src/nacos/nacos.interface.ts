@@ -41,3 +41,9 @@ export interface NacosInstanceOptions {
     ephemeral?: boolean;
     metadata?: any;
 }
+
+
+export interface NacosInstanceAsyncOptions {
+    useFactory(...args: any[]): Promise<NacosInstanceOptions> | NacosInstanceOptions;
+    inject?: any[];
+}
